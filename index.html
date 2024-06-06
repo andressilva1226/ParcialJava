@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gimnasio</title>
+    <link rel="icon" href="./fotos/gym-icon.png">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(24, 51, 70);
+        }
+        .container {
+            margin-top: 50px;
+            background-color:rgb(24, 51, 70);
+        }
+        .exercise-img {
+            max-width: 100%;
+            height: auto;
+        }
+        .th{
+            background-color: #f8f9fa;
+        }
+        #exercises-table-body{
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h1 style="color: white;">Bienvenidos al Gimnasio</h1>
+                <h3 style="color: white;" >Gimnasio Fitness</h3>
+                <img src="fotos/gym.png" alt="Imagen del Gimnasio" class="exercise-img">
+                <div class="mt-4">
+                    <button id="add-exercise-btn" class="btn btn-primary">Agregar Ejercicio</button>
+                    <button id="show-hardest-exercise-btn" class="btn btn-success">Mostrar Ejercicio Más Difícil</button>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <h2 style="color: white;" >Ejercicios Agregados</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="th">ID</th>
+                            <th class="th">Tipo</th>
+                            <th class="th">Dificultad</th>
+                            <th class="th">Duración (min)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exercises-table-body">
+                        <!-- Los ejercicios se agregarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExerciseModalLabel">Agregar Ejercicio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="exercise-form">
+                        <div class="form-group">
+                            <label for="exercise-type">Tipo de Ejercicio</label>
+                            <input type="text" class="form-control" id="exercise-type" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exercise-difficulty">Dificultad del Ejercicio</label>
+                            <input type="text" class="form-control" id="exercise-difficulty" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exercise-duration">Duración del Ejercicio (minutos)</label>
+                            <input type="number" class="form-control" id="exercise-duration" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let exercises = [];
+
+        class Exercise {
+            constructor(type, difficulty, duration) {
+                this.type = type;
+                this.difficulty = difficulty;
+                this.duration = duration;
+            }
+        }
+
+        class Gym {
+            constructor() {}
+
+            addExercise(type, difficulty, duration) {
+                let id = exercises.length + 1;
+
+                let objExercise = {
+                    id: id,
+                    type: type,
+                    difficulty: difficulty,
+                    duration: parseFloat(duration)
+                };
+
+                exercises.push(objExercise);
+                this.updateTable();
+            }
+
+            updateTable() {
+                let tableBody = document.getElementById('exercises-table-body');
+                tableBody.innerHTML = '';
+                exercises.forEach(exercise => {
+                    let row = `<tr>
+                        <td>${exercise.id}</td>
+                        <td>${exercise.type}</td>
+                        <td>${exercise.difficulty}</td>
+                        <td>${exercise.duration}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            }
+
+            showHardestExercise() {
+                let hardestExercise = null;
+                let highestDifficulty = 0;
+                for (let i = 0; i < exercises.length; i++) {
+                    if (exercises[i].difficulty > highestDifficulty) {
+                        highestDifficulty = exercises[i].difficulty;
+                        hardestExercise = exercises[i];
+                    }
+                }
+                console.log("El ejercicio más difícil es: ", hardestExercise);
+                alert(`El ejercicio más difícil es: ${hardestExercise.type} con una dificultad de ${hardestExercise.difficulty}`);
+            }
+        }
+
+        let gym = new Gym();
+
+        document.getElementById('add-exercise-btn').addEventListener('click', () => {
+            $('#addExerciseModal').modal('show');
+        });
+
+        document.getElementById('exercise-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            let type = document.getElementById('exercise-type').value;
+            let difficulty = document.getElementById('exercise-difficulty').value;
+            let duration = document.getElementById('exercise-duration').value;
+            gym.addExercise(type, difficulty, duration);
+            $('#addExerciseModal').modal('hide');
+        });
+
+        document.getElementById('show-hardest-exercise-btn').addEventListener('click', () => {
+            gym.showHardestExercise();
+        });
+    </script>
+</body>
+</html>
