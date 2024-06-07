@@ -90,62 +90,62 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        let exercises = [];
+        let ejercicios = [];
 
-        class Exercise {
-            constructor(type, difficulty, duration) {
-                this.type = type;
-                this.difficulty = difficulty;
-                this.duration = duration;
+        class Ejercicio {
+            constructor(tipo, dificultad, duracion) {
+                this.tipo = tipo;
+                this.dificultad = dificultad;
+                this.duracion = duracion;
             }
         }
 
-        class Gym {
+        class Gimnasio {
             constructor() {}
 
-            addExercise(type, difficulty, duration) {
-                let id = exercises.length + 1;
+            agregarEjercicio(tipo, dificultad, duracion) {
+                let id = ejercicios.length + 1;
 
-                let objExercise = {
+                let objEjercicio = {
                     id: id,
-                    type: type,
-                    difficulty: difficulty,
-                    duration: parseFloat(duration)
+                    tipo: tipo,
+                    dificultad: dificultad,
+                    duracion: parseFloat(duracion)
                 };
 
-                exercises.push(objExercise);
-                this.updateTable();
+                ejercicios.push(objEjercicio);
+                this.actualizarTabla();
             }
 
-            updateTable() {
-                let tableBody = document.getElementById('exercises-table-body');
-                tableBody.innerHTML = '';
-                exercises.forEach(exercise => {
-                    let row = `<tr>
-                        <td>${exercise.id}</td>
-                        <td>${exercise.type}</td>
-                        <td>${exercise.difficulty}</td>
-                        <td>${exercise.duration}</td>
+            actualizarTabla() {
+                let tablaCuerpo = document.getElementById('exercises-table-body');
+                tablaCuerpo.innerHTML = '';
+                ejercicios.forEach(ejercicio => {
+                    let fila = `<tr>
+                        <td>${ejercicio.id}</td>
+                        <td>${ejercicio.tipo}</td>
+                        <td>${ejercicio.dificultad}</td>
+                        <td>${ejercicio.duracion}</td>
                     </tr>`;
-                    tableBody.innerHTML += row;
+                    tablaCuerpo.innerHTML += fila;
                 });
             }
 
-            showHardestExercise() {
-                let hardestExercise = null;
-                let highestDifficulty = 0;
-                for (let i = 0; i < exercises.length; i++) {
-                    if (exercises[i].difficulty > highestDifficulty) {
-                        highestDifficulty = exercises[i].difficulty;
-                        hardestExercise = exercises[i];
+            mostrarEjercicioMasDificil() {
+                let ejercicioMasDificil = null;
+                let mayorDificultad = 0;
+                for (let i = 0; i < ejercicios.length; i++) {
+                    if (ejercicios[i].dificultad > mayorDificultad) {
+                        mayorDificultad = ejercicios[i].dificultad;
+                        ejercicioMasDificil = ejercicios[i];
                     }
                 }
-                console.log("El ejercicio más difícil es: ", hardestExercise);
-                alert(`El ejercicio más difícil es: ${hardestExercise.type} con una dificultad de ${hardestExercise.difficulty}`);
+                console.log("El ejercicio más difícil es: ", ejercicioMasDificil);
+                alert(`El ejercicio más difícil es: ${ejercicioMasDificil.tipo} con una dificultad de ${ejercicioMasDificil.dificultad}`);
             }
         }
 
-        let gym = new Gym();
+        let gimnasio = new Gimnasio();
 
         document.getElementById('add-exercise-btn').addEventListener('click', () => {
             $('#addExerciseModal').modal('show');
@@ -153,16 +153,16 @@
 
         document.getElementById('exercise-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            let type = document.getElementById('exercise-type').value;
-            let difficulty = document.getElementById('exercise-difficulty').value;
-            let duration = document.getElementById('exercise-duration').value;
-            gym.addExercise(type, difficulty, duration);
+            let tipo = document.getElementById('exercise-type').value;
+            let dificultad = document.getElementById('exercise-difficulty').value;
+            let duracion = document.getElementById('exercise-duration').value;
+            gimnasio.agregarEjercicio(tipo, dificultad, duracion);
             $('#addExerciseModal').modal('hide');
         });
 
         document.getElementById('show-hardest-exercise-btn').addEventListener('click', () => {
-            gym.showHardestExercise();
+            gimnasio.mostrarEjercicioMasDificil();
         });
     </script>
 </body>
-</html>
+</html
